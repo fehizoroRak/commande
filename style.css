@@ -1,0 +1,84 @@
+*{
+    font-family: Arial, Helvetica, sans-serif;
+}
+table {
+    border-collapse: separate;
+    border-spacing: 4px;
+    width: 100%;
+    margin: 20px auto;
+
+   
+}
+
+table,
+th,
+td {
+
+    border: 1px solid black;
+  
+}
+
+td input[type="number"] {
+    width: 50px;
+}
+
+th,
+td {
+    padding: 10px;
+    text-align: center;
+    
+}
+
+th {
+    background-color: #fff;
+}
+
+button {
+    width: 300px;
+    height: 40px;
+    background-color: #4caf50;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+  
+  .navbar {
+    overflow: hidden;
+    background-color: #333; /* Couleur de fond de la navbar */
+    position: sticky;
+    top: 0; /* Fixe la barre de navigation en haut de la page */
+    z-index: 100; /* Assure que la barre de navigation est au-dessus du contenu */
+  }
+  
+  .navbar a {
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+  .navbar a:hover {
+    background-color: #ddd; /* Couleur de fond au survol */
+    color: black;
+  }
+  
+  .container{
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  .masaka{
+    background-color: red;
+    color: #fff;
+    font-weight: bolder;
+  }
+  .manta{
+    background-color: rgb(56, 138, 200);
+    color: #fff;
+    font-weight: bolder;
+  }

@@ -47,3 +47,6 @@ var inputs = document.querySelectorAll('input[type="number"]');
 inputs.forEach(function (input) {
 input.addEventListener('input', updateTotal);
 });
+
+
+
