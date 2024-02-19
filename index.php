@@ -1,7 +1,5 @@
 <?php
-
-
-
+session_start();
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['inserer'])) {
 
     $semaineStrtotime = $_POST["semaine"];
@@ -148,7 +146,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['inserer'])) {
     if (successMessage) {
       successMessage.style.display = 'none';
     }
-  }, 3000); // 3000 milliseconds = 3 seconds
+  }, 2000); // 3000 milliseconds = 3 seconds
 </script>
 
 
@@ -167,14 +165,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['inserer'])) {
 <div class="navbar">
         <a style="border-right: 3px solid #fff;" href="index.php">Home</a>
         <a style="border-right: 3px solid #fff;" href="display.php">All Orders</a>
-        <a style="border-right: 3px solid #fff;" href="semaine50.php">Semaine 11 au 17 DEC</a>
-        <a style="border-right: 3px solid #fff;" href="semaine51.php">Semaine 18 au 24 DEC</a>
-        <a style="border-right: 3px solid #fff;" href="semaine52.php">Semaine 25 au 31 DEC</a>
+        <!-- <a style="border-right: 3px solid #fff;" href="semaine50.php">Semaine 11 au 17 DEC</a>
+        <a style="border-right: 3px solid #fff;" href="semaine51.php">Semaine 18 au 24 DEC</a> -->
+        <a style="border-right: 3px solid #fff;" href="semaine8.php">Semaine 8</a>
+        
+
+
     </div>
 <body class="body">
-
-
-
 
 
         <form id="myForm" style="display: flex; flex-direction:column; align-items:center;margin:0 40px;" action="" method="POST">
@@ -217,7 +215,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['inserer'])) {
                     </th>
                     <th colspan="5">
                         <label for="cp">Code postale:</label>
-                        <input type="text" id="cp" name="cp">
+                        <input type="text" id="cp" name="cp" maxlength="2">
                     </th>
                     <th colspan="7">
                         <label for="ville">Ville:</label>
@@ -230,13 +228,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['inserer'])) {
                         <label style="float: left;" for="infossupp">Infos supplementaires:</label>
                         <input style="float: left;" type="text" id="infossupp" name="infossupp">
                     </td>
-
+                    <script>
+        function formatInput(input) {
+            var cleanedValue = input.value.replace(/\s/g, '');
+            var formattedValue = cleanedValue.replace(/(\d{2})(?=\d)/g, '$1 ');
+            formattedValue = formattedValue.slice(0, 14);
+            input.value = formattedValue;
+        }
+    </script>
                 </tr>
                 <!-- Ligne 4 -->
                 <tr>
                     <td colspan="6">
                         <label for="tel">Numero de tel:</label>
-                        <input type="tel" id="tel" name="tel" required>
+                        <input type="tel" id="tel" name="tel" maxlength="14" oninput="formatInput(this)" required>
                     </td>
 
                 </tr>
@@ -301,7 +306,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['inserer'])) {
                     <td style="background-color: purple;font-weight:bold;"><input type="number" name="sakay"></td>
                 </tr>
             </table>
-
+            
+        
+    
 
 
             <button type="submit" name="inserer" >INSERER</button>
@@ -310,12 +317,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['inserer'])) {
         
 
 
-
 </body>
 </html>
 
 
     <script src="script.js"></script>
-
-
 </html>

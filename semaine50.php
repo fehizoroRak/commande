@@ -1,3 +1,8 @@
+ <!-- Include jQuery library -->
+ <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
+
 <link rel="stylesheet" href="style.css">
 <div class="navbar">
     <a style="border-right: 3px solid #fff;" href="index.php">Home</a>
@@ -6,10 +11,18 @@
     <a style="border-right: 3px solid #fff;" href="semaine51.php">Semaine 18 au 24 DEC</a>
     <a style="border-right: 3px solid #fff;" href="semaine52.php">Semaine 25 au 31 DEC</a>
 </div>
+
+<!-- Filter Form -->
+<form id="dateFilterForm">
+    <label for="filterDate">Filter by Date:</label>
+    <input type="date" id="filterDate" name="filterDate">
+    <button type="button" onclick="filterOrders()">Apply Filter</button>
+</form>
+
+
 <div class="container">
 
     <?php
-    // Initialize totals
     $total_sv_pim_manta = 0;
     $total_sv_manta = 0;
     $total_sp_manta = 0;
@@ -347,6 +360,8 @@
 
 </tr>
 </table>
+
+
 <?php
             // Increment the totals
             $total_sv_pim_manta += $row['sv_pim_manta'];
@@ -433,5 +448,111 @@
 </div>
 
 
+<h1>LISTE DES MASAKA</h1>
+
+<?php
+
+$masakaValues = [];
+
+// Iterate through each sub-array in $rows
+foreach ($rows as $row) {
+    // Add values to the corresponding keys in $masakaValues
+    $masakaValues['sv_pim_masaka'][] = $row['sv_pim_masaka'];
+    $masakaValues['sv_masaka'][] = $row['sv_masaka'];
+    $masakaValues['sp_masaka'][] = $row['sp_masaka'];
+    $masakaValues['sf_masaka'][] = $row['sf_masaka'];
+    $masakaValues['sl_masaka'][] = $row['sl_masaka'];
+    $masakaValues['nv_masaka'][] = $row['nv_masaka'];
+    $masakaValues['nb_masaka'][] = $row['nb_masaka'];
+    $masakaValues['np_masaka'][] = $row['np_masaka'];
+
+    $masakaValues['mangue'][] = $row['mangue'];
+    $masakaValues['gasy'][] = $row['gasy'];
+    $masakaValues['museau'][] = $row['museau'];
+    $masakaValues['mb'][] = $row['mb'];
+    $masakaValues['sakay'][] = $row['sakay'];
+}
+
+foreach ($masakaValues as $key => $values) {
+    // Check if all values are 0
+    if (array_sum($values) == 0) {
+        continue; // Skip displaying values when all values are 0
+    }
+
+    // Output the label based on the key
+    switch ($key) {
+        case "sv_pim_masaka":
+            echo 'SV PIM = ';
+            break;
+        case "sv_masaka":
+            echo 'SV  = ';
+            break;
+        case "sp_masaka":
+            echo 'SP  = ';
+            break;
+        case "sf_masaka":
+            echo 'SF  = ';
+            break;
+        case "sl_masaka":
+            echo 'SL  = ';
+            break;
+        case "nv_masaka":
+            echo 'NV  = ';
+            break;
+        case "nb_masaka":
+            echo 'NB  = ';
+            break;
+        case "np_masaka":
+            echo 'NP  = ';
+            break;
+        case "mangue":
+            echo 'LASARY MANGUE  = ';
+            break;
+        case "gasy":
+            echo 'LASARY GASY = ';
+            break;
+        case "museau":
+            echo 'SALADE DE MUSEAU  = ';
+            break;
+        case "mb":
+            echo 'MOFO BAOLINA  = ';
+            break;
+        case "sakay":
+            echo 'SAKAY  = ';
+            break;
+
+        default:
+            echo "$key : ";
+            break;
+    }
+
+    // Filter out values that are equal to 0
+    $filteredValues = array_filter($values, function ($value) {
+        return $value != 0;
+    });
+
+    // Output each non-zero value separated by a slash
+    echo implode(' / ', $filteredValues) . "<br>";
+}
+
+?>
 
 
+<!-- JavaScript for filtering orders -->
+<script>
+    function filterOrders() {
+        // Get the selected date from the input field
+        var selectedDate = $("#filterDate").val();
+
+        // Make an AJAX request to fetch filtered orders
+        $.ajax({
+            type: "POST",
+            url: "filter_orders.php", // Replace with the actual file handling the filter logic
+            data: { selectedDate: selectedDate },
+            success: function (data) {
+                // Update the orders container with the filtered content
+                $(".container").html(data);
+            }
+        });
+    }
+</script>

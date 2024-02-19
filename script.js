@@ -38,8 +38,11 @@ var sakay = parseFloat(document.getElementsByName("sakay")[0].value) || 0;
     var totalMasaka = (sv_pim_masaka + sv_masaka + sp_masaka + sf_masaka + sl_masaka + nv_masaka + nb_masaka + np_masaka) * 0.50;
     // Calculer le grand total
     var grandTotal = totalManta + totalMasaka + (mangue * 12) + (gasy * 12) + (museau * 12) + (mb * 0.50) + (sakay * 5);
-// Update the display of the total
+
+
+    // Update the display of the total
 document.getElementById("grandTotal").innerText =  grandTotal.toFixed(2) + " EUROS";
+
 }
 
 // Add event listeners on input fields
@@ -47,6 +50,7 @@ var inputs = document.querySelectorAll('input[type="number"]');
 inputs.forEach(function (input) {
 input.addEventListener('input', updateTotal);
 });
+
 
 
 

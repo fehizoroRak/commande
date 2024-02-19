@@ -1,12 +1,24 @@
 <link rel="stylesheet" href="style.css">
-
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <div class="navbar">
         <a style="border-right: 3px solid #fff;" href="index.php">Home</a>
         <a style="border-right: 3px solid #fff;" href="display.php">All Orders</a>
-        <a style="border-right: 3px solid #fff;" href="semaine50.php">Semaine 11 au 17 DEC</a>
-        <a style="border-right: 3px solid #fff;" href="semaine51.php">Semaine 18 au 24 DEC</a>
-        <a style="border-right: 3px solid #fff;" href="semaine52.php">Semaine 25 au 31 DEC</a>
+        
+    
+        <form action="" method="GET">
+        <input type="text" name="search" placeholder="Rechercher...">
+        <button type="submit">Rechercher</button>
+    </form>
+    
     </div>
+
+
+        <!-- Filter Form -->
+<form id="dateFilterForm">
+    <label for="filterDate">Filter by Date:</label>
+    <input type="date" id="filterDate" name="filterDate">
+    <button type="button" onclick="filterOrders()">Apply Filter</button>
+</form>
 
 <div class="container">
     <?php
@@ -44,18 +56,56 @@
         $password = "";
         $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $statement = $pdo->query("SELECT * FROM commandes");
+
+        $searchKeyword = isset($_GET['search']) ? $_GET['search'] : '';
+        $sql = "SELECT * FROM commandes WHERE 
+            semaine LIKE '%$searchKeyword%' OR 
+            date LIKE '%$searchKeyword%' OR 
+            heure LIKE '%$searchKeyword%' OR 
+            journee LIKE '%$searchKeyword%' OR 
+            adresse LIKE '%$searchKeyword%' OR 
+            cp LIKE '%$searchKeyword%' OR 
+            ville LIKE '%$searchKeyword%' OR 
+            infossupp LIKE '%$searchKeyword%' OR 
+            tel LIKE '%$searchKeyword%' OR 
+            mangue LIKE '%$searchKeyword%' OR 
+            gasy LIKE '%$searchKeyword%' OR 
+            museau LIKE '%$searchKeyword%' OR 
+            mb LIKE '%$searchKeyword%' OR 
+            sakay LIKE '%$searchKeyword%'";
+        $statement = $pdo->query($sql);
         $rows = $statement->fetchAll(PDO::FETCH_ASSOC);
 
+        function highlightSearchTerm($text, $searchTerm) {
+            $lowerText = strtolower($text);
+            $lowerSearchTerm = strtolower($searchTerm);
+        
+            $pos = stripos($lowerText, $lowerSearchTerm);
+        
+            if ($pos !== false) {
+                $highlightedText = substr($text, 0, $pos);
+                $highlightedText .= '<span style="background-color: yellow;">' . substr($text, $pos, strlen($searchTerm)) . '</span>';
+                $highlightedText .= substr($text, $pos + strlen($searchTerm));
+                return $highlightedText;
+            }
+        
+            return $text;
+        }
+        
+        
+        
+        
         $counter = 0;
 
         // Output the results (you might want to format this better in a real application)
         foreach ($rows as $row) {
 
      $counter++
-
+  
     ?>
     <p style="font-size:25px; font-weight:bolder;color:blue;"><?php echo $counter; ?> </p>
+<p><?= $row['id']  ?></p>
+
 
             <table>
               
@@ -107,7 +157,7 @@ $dateConvertie = str_replace($monthsEnglish, $monthsFrench, $dateConvertie);
 <tr>
     <th colspan="14">
         <p for="adresse" style="text-align: left;">
-            <?= $row['adresse']  ?> , <?= $row['cp']  ?> , <?= $row['ville']  ?>
+            <?= highlightSearchTerm($row['adresse'], $searchKeyword)  ?> , <?= highlightSearchTerm($row['cp'], $searchKeyword)  ?> ,  <?= highlightSearchTerm($row['ville'], $searchKeyword)   ?>
         </p>
     </th>
 
@@ -350,6 +400,11 @@ $dateConvertie = str_replace($monthsEnglish, $monthsFrench, $dateConvertie);
 
 </tr>
 </table>
+
+<a href="edit.php?id=<?= $row['id']; ?>">Edit Record</a>
+
+
+
 <?php
             // Increment the totals
             $total_sv_pim_manta += $row['sv_pim_manta'];
@@ -382,6 +437,7 @@ $dateConvertie = str_replace($monthsEnglish, $monthsFrench, $dateConvertie);
         echo "Error: " . $e->getMessage();
     }
 ?>
+
 
 <h1 style="text-align: center;">TOTAL</h1>
 <table>
@@ -423,6 +479,24 @@ $dateConvertie = str_replace($monthsEnglish, $monthsFrench, $dateConvertie);
         <td> <?= $total_sakay ?></td>
     </tr>
 
+    <tr colspan="14" style="background-color: orange;font-size:20px; font-weight:bold;">
+        <td>GRAND TOTAL</td>
+        <td><?= $total_sv_pim_masaka + $total_sv_pim_manta  ?></td>
+        <td> <?= $total_sv_masaka + $total_sv_manta ?></td>
+        <td> <?= $total_sp_masaka + $total_sp_manta ?></td>
+        <td> <?= $total_sf_masaka + $total_sf_manta ?></td>
+        <td> <?= $total_sl_masaka + $total_sl_manta ?></td>
+        <td> <?= $total_nv_masaka + $total_nv_manta ?></td>
+        <td> <?= $total_nb_masaka + $total_nb_manta ?></td>
+        <td> <?= $total_np_masaka + $total_np_manta ?></td>
+
+        <td> <?= $total_mangue ?></td>
+        <td> <?= $total_gasy ?></td>
+        <td> <?= $total_museau ?></td>
+        <td> <?= $total_mb ?></td>
+        <td> <?= $total_sakay ?></td>
+    </tr>
+
     <tr>
         <td colspan="14" style="background-color: green;font-size:30px; font-weight:bold;">
             TOTAL (€): <?php echo  $totalAmount ?>
@@ -431,3 +505,36 @@ $dateConvertie = str_replace($monthsEnglish, $monthsFrench, $dateConvertie);
     </tr>
 </table>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- JavaScript for filtering orders -->
+<script>
+    function filterOrders() {
+        // Get the selected date from the input field
+        var selectedDate = $("#filterDate").val();
+
+        // Make an AJAX request to fetch filtered orders
+        $.ajax({
+            type: "POST",
+            url: "filter_orders.php", // Replace with the actual file handling the filter logic
+            data: { selectedDate: selectedDate },
+            success: function (data) {
+                // Update the orders container with the filtered content
+                $(".container").html(data);
+            }
+        });
+    }
+</script>

@@ -54,6 +54,7 @@
 
      $counter++
     ?>
+      <p><?= $row['id']  ?></p>
      <p style="font-size:25px; font-weight:bolder;color:blue;"><?php echo $counter; ?> </p>
             <table>
             
@@ -259,7 +260,7 @@ $dateConvertie = str_replace($monthsEnglish, $monthsFrench, $dateConvertie);
     ?>
 </tr>
 <!-- Ligne 6 -->
-<tr colspan="14">
+<tr colspan="14"><Figcaption></Figcaption>
 
 
     <td class="masaka">MASAKA</td>
@@ -421,11 +422,119 @@ $dateConvertie = str_replace($monthsEnglish, $monthsFrench, $dateConvertie);
         <td> <?= $total_sakay ?></td>
     </tr>
 
+   
+    <tr colspan="14" style="background-color: orange;font-size:20px; font-weight:bold;">
+        <td>GRAND TOTAL</td>
+        <td><?= $total_sv_pim_masaka + $total_sv_pim_manta  ?></td>
+        <td> <?= $total_sv_masaka + $total_sv_manta ?></td>
+        <td> <?= $total_sp_masaka + $total_sp_manta ?></td>
+        <td> <?= $total_sf_masaka + $total_sf_manta ?></td>
+        <td> <?= $total_sl_masaka + $total_sl_manta ?></td>
+        <td> <?= $total_nv_masaka + $total_nv_manta ?></td>
+        <td> <?= $total_nb_masaka + $total_nb_manta ?></td>
+        <td> <?= $total_np_masaka + $total_np_manta ?></td>
+
+        <td> <?= $total_mangue ?></td>
+        <td> <?= $total_gasy ?></td>
+        <td> <?= $total_museau ?></td>
+        <td> <?= $total_mb ?></td>
+        <td> <?= $total_sakay ?></td>
+    </tr>
     <tr>
         <td colspan="14" style="background-color: green;font-size:30px; font-weight:bold;">
             TOTAL (€): <?php echo  $totalAmount ?>
         </td>
 
     </tr>
+
 </table>
 </div>
+
+<h1>LISTE DES MASAKA</h1>
+
+<?php
+
+$masakaValues = [];
+
+// Iterate through each sub-array in $rows
+foreach ($rows as $row) {
+    // Add values to the corresponding keys in $masakaValues
+    $masakaValues['sv_pim_masaka'][] = $row['sv_pim_masaka'];
+    $masakaValues['sv_masaka'][] = $row['sv_masaka'];
+    $masakaValues['sp_masaka'][] = $row['sp_masaka'];
+    $masakaValues['sf_masaka'][] = $row['sf_masaka'];
+    $masakaValues['sl_masaka'][] = $row['sl_masaka'];
+    $masakaValues['nv_masaka'][] = $row['nv_masaka'];
+    $masakaValues['nb_masaka'][] = $row['nb_masaka'];
+    $masakaValues['np_masaka'][] = $row['np_masaka'];
+
+    $masakaValues['mangue'][] = $row['mangue'];
+    $masakaValues['gasy'][] = $row['gasy'];
+    $masakaValues['museau'][] = $row['museau'];
+    $masakaValues['mb'][] = $row['mb'];
+    $masakaValues['sakay'][] = $row['sakay'];
+}
+
+foreach ($masakaValues as $key => $values) {
+    // Check if all values are 0
+    if (array_sum($values) == 0) {
+        continue; // Skip displaying values when all values are 0
+    }
+
+    // Output the label based on the key
+    switch ($key) {
+        case "sv_pim_masaka":
+            echo 'SV PIM = ';
+            break;
+        case "sv_masaka":
+            echo 'SV  = ';
+            break;
+        case "sp_masaka":
+            echo 'SP  = ';
+            break;
+        case "sf_masaka":
+            echo 'SF  = ';
+            break;
+        case "sl_masaka":
+            echo 'SL  = ';
+            break;
+        case "nv_masaka":
+            echo 'NV  = ';
+            break;
+        case "nb_masaka":
+            echo 'NB  = ';
+            break;
+        case "np_masaka":
+            echo 'NP  = ';
+            break;
+        case "mangue":
+            echo 'LASARY MANGUE  = ';
+            break;
+        case "gasy":
+            echo 'LASARY GASY = ';
+            break;
+        case "museau":
+            echo 'SALADE DE MUSEAU  = ';
+            break;
+        case "mb":
+            echo 'MOFO BAOLINA  = ';
+            break;
+        case "sakay":
+            echo 'SAKAY  = ';
+            break;
+
+        default:
+            echo "$key : ";
+            break;
+    }
+
+    // Filter out values that are equal to 0
+    $filteredValues = array_filter($values, function ($value) {
+        return $value != 0;
+    });
+
+    // Output each non-zero value separated by a slash
+    echo implode(' / ', $filteredValues) . "<br>";
+}
+
+?>

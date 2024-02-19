@@ -1,0 +1,20 @@
+*{
+    font-family: Arial, Helvetica, sans-serif;
+}
+table {
+    border-collapse: separate;
+    border-spacing: 4px;
+    width: 100%;
+    margin: 20px auto;
+}
+
+  .masaka{
+    background-color: red;
+    color: #fff;
+    font-weight: bolder;
+  }
+  .manta{
+    background-color: rgb(56, 138, 200);
+    color: #fff;
+    font-weight: bolder;
+  }
